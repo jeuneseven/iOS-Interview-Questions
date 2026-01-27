@@ -6,6 +6,54 @@
 
 # Data
 
+## What does the Codable protocol do?
+
+- Purpose: A typealias for Encodable & Decodable, enabling a type to be converted to and from external representations like JSON or Property Lists.
+- Key Requirement: Properties within the type must also be Codable.
+- Use Case: Essential for API integration (parsing server responses) and local data persistence (saving data to disk or UserDefaults).
+- Keywords: JSON, Serialization, Deserialization, JSONEncoder, JSONDecoder, Persistence.
+
+## What does the Identifiable protocol do?
+
+- Purpose: Ensures an instance has a stable, unique identity regardless of its value.
+- Key Property: Requires a single property named id.
+- Use Case: Critical for SwiftUI lists and collections to track which items are added, removed, or moved, ensuring smooth animations and data integrity.
+- Keywords: Stable identity, id, SwiftUI reconciliation, Unique.
+
+## What does the Hashable protocol do?
+
+- Purpose: Allows an object to be converted into a hash value (an integer).
+- Key Requirement: The object must also conform to Equatable.
+- Use Case: Necessary for storing instances in a Set or using them as keys in a Dictionary. It enables fast $O(1)$ lookups.
+- Keywords: Hash value, Set, Dictionary keys, $O(1)$ lookup, Deterministic.
+
+## What does the Equatable protocol do? 
+
+- Purpose: Defines a way to compare two instances for equality.
+- Key Operator: Implements the == operator.
+- Use Case: Used for basic logic checks (if a == b), searching in arrays (contains), or unit testing.
+- Keywords: Comparison, == operator, Value equality, Logic branching.
+
+## What does the Comparable protocol do?
+
+- Purpose: Extends Equatable to allow objects to be ordered or ranked.
+- Key Operator: Implements the < (less than) operator.
+- Use Case: Essential for sorting arrays (.sorted()), finding the min() or max(), and using range operators (...).
+- Keywords: Sorting, Relational operators (<, >), Ranking, Order.
+
+## What does the CaseIterable protocol do?
+- Purpose: Automatically generates a collection of all values in an enum.
+- Key Property: Provides an allCases static property.
+- Use Case: Perfect for populating Pickers, Segmented Controls, or looping through every possible state of an enum without hardcoding an array.
+- Keywords: allCases, Enum iteration, UI populating, Reflection.
+
+## What does the CustomStringConvertible protocol do? 
+
+- Purpose: Allows you to define a custom text representation for an instance.
+- Key Property: Requires a description string property.
+- Use Case: Improves debugging and logging. Instead of a messy default output, print(object) returns the specific string you defined.
+- Keywords: description, Debugging, Logging, String interpolation.
+
 # Design patterns
 
 ##  What architecture would you use for a simple app vs a complex app?
@@ -57,5 +105,7 @@
 - Compiler will warn if var is never mutated
 
 # SwiftUI
+
+## What's the difference between @Bindable and @Binding? 
 
 # UIKit
