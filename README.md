@@ -104,6 +104,30 @@
 - Best practice: Use let by default, var only when mutation needed
 - Compiler will warn if var is never mutated
 
+## What is the difference between struct and class in Swift?
+
+- Struct is a value type, copied on assignment.
+- Class is a reference type, shared on assignment.
+- Struct is preferred for immutability and thread safety.
+- Use struct when you want a copy; use class when you need shared state or inheritance.
+
+## What does the question mark (?) mean in Swift?
+
+- Indicates Optional type
+- Value can be nil (absent)
+- Used when data might not exist (e.g., optional JSON fields)
+- Must unwrap before use (optional binding, guard, force unwrap)
+
+## Explain Optionals and their safety features
+
+- Swift's way to handle absence of value
+- Prevents null pointer crashes
+- Unwrapping methods:
+	- Optional binding: if let, guard let
+	- Nil coalescing: ??
+	- Optional chaining: ?.
+	- Force unwrap: ! (avoid when possible)
+
 # SwiftUI
 
 ## What's the difference between @Bindable and @Binding? 
