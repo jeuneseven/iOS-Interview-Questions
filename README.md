@@ -2,6 +2,28 @@
 
 # Table of Contents
 
+[Accessibility](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#accessibility)
+
+[Data](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#data)
+
+[Design patterns](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#design-patterns)
+
+[Frameworks](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#frameworks)
+
+[iOS](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#ios)
+
+[Miscellaneous](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#miscellaneous)
+
+[Performance](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#performance)
+
+[Security](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#security)
+
+[Swift](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#swift)
+
+[SwiftUI](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#swiftui)
+
+[UIKit](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#uikit)
+
 # Accessibility
 
 # Data
