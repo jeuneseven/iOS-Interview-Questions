@@ -6,6 +6,13 @@
 
 # Data
 
+## How do you persist data in iOS?
+
+- UserDefaults: small key-value data
+- Core Data: complex structured data
+- FileManager: for files
+- Keychain: for secure data (passwords, tokens)
+
 ## What does the Codable protocol do?
 
 - Purpose: A typealias for Encodable & Decodable, enabling a type to be converted to and from external representations like JSON or Property Lists.
