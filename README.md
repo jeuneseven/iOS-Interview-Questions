@@ -161,4 +161,11 @@
 
 ## What's the difference between @Bindable and @Binding? 
 
+## What’s the difference between @ObservedObject, @State, and @EnvironmentObject?
+
+- Use @State for simple properties that belong to a single view. They should usually be marked private.
+- Use @ObservedObject for complex properties that might belong to several views. Most times you’re using a reference type you should be using @ObservedObject for it.
+- Use @StateObject once for each observable object you use, in whichever part of your code is responsible for creating it.
+- Use @EnvironmentObject for properties that were created elsewhere in the app, such as shared data.
+
 # UIKit
