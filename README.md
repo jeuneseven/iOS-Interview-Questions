@@ -111,6 +111,18 @@
 
 # iOS
 
+## Explain the iOS Application Lifecycle.
+
+Key methods in AppDelegate or SceneDelegate:
+
+- application(_:didFinishLaunchingWithOptions:) – app launched
+- applicationDidEnterBackground(_:) – app moved to background
+- applicationWillEnterForeground(_:) – app returning to foreground
+- applicationDidBecomeActive(_:) – app is active
+- applicationWillTerminate(_:) – app is terminating
+
+Used to manage resources, save data, pause/resume tasks.
+
 # Miscellaneous
 
 # Performance
@@ -121,6 +133,14 @@
 - Use [weak self] in closures
 - Be careful with closures in view models
 - Instruments/Memory Graph Debugger to detect leaks
+
+## Difference between weak, strong, and unowned in Swift?
+
+- strong: default, keeps the object in memory
+- weak: doesn’t increase retain count, allows ARC to deallocate (used in delegates, optional)
+- unowned: like weak but non-optional, used when object will always be in memory
+
+Avoid retain cycles using weak in closures or delegates.
 
 # Security
 
