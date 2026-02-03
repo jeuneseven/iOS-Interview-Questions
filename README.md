@@ -125,6 +125,13 @@ Used to manage resources, save data, pause/resume tasks.
 
 # Miscellaneous
 
+## How does GCD work? What is the difference between async and sync?
+
+- DispatchQueue.main.async {} → for UI updates
+- DispatchQueue.global().async {} → for background work
+- async → doesn't block the current thread
+- sync → blocks the thread until task completes
+
 # Performance
 
 ## How do you avoid retain cycles?
