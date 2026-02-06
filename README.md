@@ -85,6 +85,10 @@
 
 # Design patterns
 
+##  How would you explain dependency injection to a junior developer?
+
+Dependency injection is the practice of creating an object and telling it what data it should work with, rather than letting that object query its environment to find that data for itself. Although this goes against the OOP principle of encapsulation, it allows for mocking data when testing, for example.
+
 ##  What architecture would you use for a simple app vs a complex app?
 
 - Simple app (few pages): MVC is sufficient - separates Model, View, Controller
