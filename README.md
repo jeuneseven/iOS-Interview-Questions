@@ -85,6 +85,38 @@
 
 # Design patterns
 
+##  Can you explain MVC, and how it's used on Apple's platforms?
+
+MVC is an approach that advocates separating data (model) from presentation (view), with the two parts being managed by separate logic (a controller). In theory this separation should be as clear as possible, how ever view controllers sometimes get bloated as code gets merged together into one big blob.
+
+## Can you explain MVVM, and how it might be used on Apple's platforms?
+
+**MVVM** stands for *Model–View–ViewModel*.
+
+- **Model** represents your data and business logic.
+- **View** is your UI layer — the part that the user sees and interacts with.
+- **ViewModel** acts as the middle layer that holds your app’s state and exposes data in a way that’s easy for the View to consume.
+
+MVVM separates concerns between data, UI, and state.
+
+The Model holds the data, the View shows it, and the ViewModel connects the two.
+
+On Apple platforms like SwiftUI, the View binds to data published by the ViewModel.
+
+Networking is usually handled in a Repository layer injected into the ViewModel.
+
+## How would you explain protocol-oriented programming to a new Swift developer?
+
+It is a way of designing code around **what something can do**, rather than **what it is**.
+
+In object-oriented programming, we usually use inheritance to share behavior – which can lead to deep class hierarchies. In protocol-oriented programming, we use **protocols and extensions** instead, so we can define behaviors in a horizontal way.
+
+One of the biggest advantages is that protocols work not just with classes, but also with structs and enums. That means we can get many of the benefits of OOP – like code reuse and polymorphism – while still taking advantage of Swift’s value types.
+
+For example, if I define a `Drivable` protocol with methods like `start()` or `stop()`, both a `Car` struct and a `Bike` class can adopt it. That keeps the code modular and flexible, and avoids deep inheritance trees.
+
+So to me, POP is really about **composition over inheritance**, and it fits perfectly with Swift’s design philosophy.
+
 ##  How would you explain dependency injection to a junior developer?
 
 Dependency injection is the practice of creating an object and telling it what data it should work with, rather than letting that object query its environment to find that data for itself. Although this goes against the OOP principle of encapsulation, it allows for mocking data when testing, for example.
