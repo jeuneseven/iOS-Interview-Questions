@@ -85,7 +85,11 @@
 
 # Design patterns
 
-##  Can you explain MVC, and how it's used on Apple's platforms?
+## How would you explain delegates to a new Swift developer?
+
+Delegation allows you to have one object act in place of another, for example your view controller might act as the data source for a table. The delegate pattern is huge in iOS, such as UITableViewDelegate from UIKit.
+
+## Can you explain MVC, and how it's used on Apple's platforms?
 
 MVC is an approach that advocates separating data (model) from presentation (view), with the two parts being managed by separate logic (a controller). In theory this separation should be as clear as possible, how ever view controllers sometimes get bloated as code gets merged together into one big blob.
 
@@ -104,6 +108,27 @@ The Model holds the data, the View shows it, and the ViewModel connects the two.
 On Apple platforms like SwiftUI, the View binds to data published by the ViewModel.
 
 Networking is usually handled in a Repository layer injected into the ViewModel.
+
+## Can you explain MVI, and how it might be used on Apple's platforms?
+
+1. Core Concept (The Definition)
+	- MVI stands for Model-View-Intent.
+	- It is a Unidirectional Data Flow (UDF) architecture.
+	- The Loop: User Action → Intent → State Update → Model → UI Update → View.
+
+2. MVI on Apple Platforms (SwiftUI)
+	- State-Driven: Perfectly matches SwiftUI's View = f(State) philosophy.
+	- Single Source of Truth: All UI data is stored in one single State struct (instead of multiple scattered variables).
+	- Intent Handling: Users send "Intents" (Actions) to a Store or ViewModel, which processes logic and updates the state.
+
+3. Why choose MVI over MVVM? (Pros)
+	- Predictability: Since state only changes in one place, it is easy to debug and track.
+	- No "Illegal" States: Prevents bugs like showing a "Loading Spinner" and "Error Message" at the same time.
+	- Testability: Business logic is a "pure function" (Input Action + Old State = New State), making unit tests very simple.
+
+4. The Trade-offs (Cons)
+	- Boilerplate: Requires more code (Enums for Actions, Structs for State) even for simple features.
+	- Learning Curve: Concepts like "Immutability" and "State Streams" can be harder for beginners than simple Data Binding.
 
 ## How would you explain protocol-oriented programming to a new Swift developer?
 
@@ -137,6 +162,48 @@ Dependency injection is the practice of creating an object and telling it what d
 
 # Frameworks
 
+## Why must UI updates be performed on the main thread?
+
+1. The Foundation (Legacy & UIKit) UIKit is not thread-safe. All drawing, layout, and event handling are tied to the Main RunLoop.
+
+	- The Risk: Updating from background threads causes "Race Conditions," leading to corrupted memory, flickering UI, or crashes.
+	- The Manual Way: Developers traditionally used DispatchQueue.main.async to jump back to the main thread.
+
+2. The SwiftUI Reality Even though SwiftUI is newer, it still renders through Core Animation. When you update @State or @Published properties, SwiftUI must reconcile the view tree on the main thread to keep the screen in sync with the data.
+
+3. The iOS 17 Evolution (@MainActor) In iOS 17, the responsibility has shifted from the developer’s "manual check" to the compiler’s "automatic enforcement."
+
+	- The Tool: We now use the @MainActor macro.
+
+	- The Shift: Instead of manually wrapping code in blocks, you mark your classes (like those using the new @Observable macro) as @MainActor.
+
+	- The Benefit: Swift now catches threading errors at compile-time. If you try to update UI data from a background thread, the app won't even compile, preventing bugs before they happen.
+
+## What are the practical pros and cons of using Singletons?
+
+- The Pros: Why use them?
+
+Single Source of Truth (SSOT): Ensures consistency for unique resources (e.g., UserDefaults.standard, Logging).
+
+Convenience: Provides easy global access without passing objects through every layer.
+
+- The Cons: Why are they bad for testing?
+
+State Pollution: Global state persists between tests, causing one test to "poison" the next.
+
+Hidden Coupling: Hard-coded calls (e.g., API.shared.fetch) make it impossible to swap real services for Mocks.
+
+- The Solution: Dependency Injection (DI) Instead of accessing the singleton directly inside a class, inject it through the initializer.
+
+Before (Bad): let user = AuthService.shared.currentUser (Hard-coded, untestable)
+
+After (Good - DI): init(authService: AuthService = .shared)
+
+Production: Uses the default .shared instance.
+
+Testing: You can inject a MockAuthService to simulate different scenarios.
+
+
 ## How do you manage modularization?
 
 - Use CocoaPods or SPM for foundation modules (networking, UI components)
@@ -167,6 +234,12 @@ Used to manage resources, save data, pause/resume tasks.
 - DispatchQueue.global().async {} → for background work
 - async → doesn't block the current thread
 - sync → blocks the thread until task completes
+
+## Experience level with XCTest and UI testing?
+
+Deeply integrated with XCTest and actively utilizing the new Swift Testing framework. The architecture relies on unit testing for logic verification, supplemented by targeted UI tests for end-to-end validation of key features.
+
+The strategy treats UI tests as high-value but high-maintenance assets, keeping them limited to critical paths to ensure the CI pipeline remains fast and reliable. Recent updates leverage the @Test syntax for enhanced readability and better test grouping.
 
 # Performance
 
@@ -232,3 +305,25 @@ Avoid retain cycles using weak in closures or delegates.
 - Use @EnvironmentObject for properties that were created elsewhere in the app, such as shared data.
 
 # UIKit
+
+## What are the best practices for embedding SwiftUI in a UIKit-based project, and embedding UIKit in a SwiftUI-based project?
+
+General Principles
+
+- Prefer module- or page-level integration, avoid fine-grained mixing
+- Keep clear boundaries between UIKit and SwiftUI responsibilities
+
+UIKit embedding SwiftUI
+
+- Use UIHostingController to host SwiftUI views
+- Typically embedded as a full page or independent feature module
+- UIKit manages navigation and lifecycle
+- Communicate via ViewModel, Combine, or callbacks
+- Common approach for incremental adoption of SwiftUI
+
+SwiftUI embedding UIKit
+
+- Use UIViewControllerRepresentable / UIViewRepresentable
+- Mainly for unsupported or advanced UIKit features
+- Encapsulate UIKit as a self-contained component
+- SwiftUI remains the source of truth for state and data
