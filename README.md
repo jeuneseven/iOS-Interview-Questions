@@ -26,6 +26,69 @@
 
 # Accessibility
 
+## VoiceOver Testing
+
+- Test apps with **VoiceOver enabled** to ensure usability for visually impaired users
+- Navigate through **all key screens** to verify:
+  - Accessibility labels are present
+  - Reading order is logical and intuitive
+- Use **Xcode Accessibility Inspector** to:
+  - Identify missing accessibility labels
+  - Verify accessibility traits and roles
+- Pay special attention to **custom UI components**:
+  - Custom views are not announced correctly by default
+  - Explicitly set `accessibilityLabel` and `accessibilityTraits`
+- Use **Screen Curtain** during testing to simulate full blindness
+- Ensure the app remains fully usable **without visual feedback**
+
+---
+
+## Dynamic Type
+
+- Allows users to **adjust preferred font size system-wide**
+- Supported by default in **SwiftUI**
+- Best practices:
+  - Use system text styles (`.body`, `.headline`, etc.)
+  - Avoid hard-coded font sizes
+- Ensures readability across all accessibility text size settings
+
+---
+
+## Core Accessibility Challenges
+
+- Accessibility is about **inclusive usability**, not just VoiceOver support
+- Common user needs to consider:
+  - Visual impairments
+  - Hearing impairments
+  - Color blindness
+  - Limited motor control
+- Key problems to solve:
+  - Text scaling with Dynamic Type
+  - Avoiding reliance on color alone
+  - Providing sufficiently large tap targets
+  - Adding accessibility support for custom views
+- Most accessibility issues stem from **design awareness**, not technical complexity
+- Small UI decisions can have a **significant real-world impact**
+
+---
+
+## Accessibility Accommodations in Practice
+
+- Avoid using color as the only means of conveying information:
+  - Combine color with icons or text
+- Enable **Dynamic Type** throughout the app
+- Respect system accessibility settings:
+  - Adjust or disable animations when **Reduce Motion** is enabled
+- Add VoiceOver support for custom UI:
+  - Accessibility labels
+  - Accessibility traits
+  - Logical element grouping
+- Prefer system components and text styles where possible
+- Accessibility improvements:
+  - Are sometimes trivial
+  - Sometimes require UI or animation rework
+  - Consistently improve the experience for all users
+
 # Data
 
 ## How do you persist data in iOS?
@@ -138,9 +201,74 @@ In object-oriented programming, we usually use inheritance to share behavior –
 
 One of the biggest advantages is that protocols work not just with classes, but also with structs and enums. That means we can get many of the benefits of OOP – like code reuse and polymorphism – while still taking advantage of Swift’s value types.
 
-For example, if I define a `Drivable` protocol with methods like `start()` or `stop()`, both a `Car` struct and a `Bike` class can adopt it. That keeps the code modular and flexible, and avoids deep inheritance trees.
+POP is really about **composition over inheritance**, and it fits perfectly with Swift’s design philosophy.
 
-So to me, POP is really about **composition over inheritance**, and it fits perfectly with Swift’s design philosophy.
+```
+import Foundation
+
+// 1. The Protocol: Defines the "capability" rather than the "identity"
+protocol Transportable {
+    var travelMode: String { get }
+    func move(to destination: String)
+}
+
+extension Transportable {
+    // Default implementation: Not all types need to write their own version of this
+    func checkIn() {
+        print("Candidate has arrived at the gate.")
+    }
+}
+
+// 2. Struct Implementation (Value Type)
+struct Bus: Transportable {
+    let routeNumber: Int
+    var travelMode: String { "Bus No.\(routeNumber)" }
+    
+    func move(to destination: String) {
+        print("Taking the \(travelMode) to \(destination).")
+    }
+}
+
+// 3. Enum Implementation (Value Type / State Machine)
+enum CommuteStyle: Transportable {
+    case car(isElectric: Bool)
+    case cycling
+    
+    var travelMode: String {
+        switch self {
+        case .car(let isElectric): 
+            return isElectric ? "Electric Car" : "Gas Car"
+        case .cycling: 
+            return "Bicycle"
+        }
+    }
+    
+    func move(to destination: String) {
+        print("Commuting via \(travelMode) to \(destination).")
+    }
+}
+
+// 4. The "Consumer" of the protocol
+class InterviewProcessor {
+    // This method demonstrates POP: It accepts any type conforming to Transportable
+    func conductInterview(for candidateName: String, method: Transportable) {
+        print("--- Interview Session Started ---")
+        print("Candidate: \(candidateName)")
+        method.move(to: "Headquarters Room 101")
+        print("Arrival confirmed via \(method.travelMode).")
+    }
+}
+
+// --- Usage ---
+
+let interviewer = InterviewProcessor()
+
+let candidateA = Bus(routeNumber: 42)
+let candidateB = CommuteStyle.car(isElectric: true)
+
+interviewer.conductInterview(for: "John", method: candidateA)
+interviewer.conductInterview(for: "Alice", method: candidateB)
+```
 
 ##  How would you explain dependency injection to a junior developer?
 
