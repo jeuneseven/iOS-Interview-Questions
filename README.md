@@ -148,6 +148,66 @@
 
 # Design patterns
 
+## What is the Role of Clean Architecture in Swift?
+
+Clean Architecture is a way of organizing your app code so that each part (UI, logic, and data) is clearly separated. The idea is to make your codebase easier to understand, test, and scale, especially as your app grows.
+
+### Layered Structure:
+
+1. Presentation Layer (UI)
+
+- Contains ViewControllers, SwiftUI views, or Composables.
+- Talks to the domain layer to get data and show it to the user.
+
+2. Domain Layer (Business Logic)
+
+- Contains Use Cases (what your app does).
+- Independent of frameworks like UIKit or SwiftUI.
+- Pure Swift code, easy to test.
+
+3. Data Layer (Repositories / API / Database)
+
+- Handles network requests, database access, etc.
+- Sends data to Domain layer via interfaces (protocols).
+
+### Benefits:
+
+- Testability
+
+You can test business logic without worrying about UI or API.
+
+- Separation of Concerns
+
+Each layer has a specific job. UI doesn’t handle business logic. Business logic doesn’t care how data is fetched.
+
+- Scalability
+
+Works great for large teams and big apps. Each developer can focus on a specific layer.
+
+- Maintainability
+
+If you want to replace the API or change UI framework, you can do it without affecting core logic.
+
+### Example Flow:
+
+ViewController → calls UseCase (business rule) → which talks to Repository (data) → which calls API or DB → returns result to UseCase → updates UI.
+
+## When to use Factory design pattern in Swift?
+
+When object creation is complex or depends on conditions.
+
+```
+protocol Notification {}
+class Email: Notification {}
+class SMS: Notification {}
+
+class NotificationFactory {
+   static func create(type: String) -> Notification {
+      return type == "email" ? Email() : SMS()
+   }
+}
+```
+
 ## How would you explain delegates to a new Swift developer?
 
 Delegation allows you to have one object act in place of another, for example your view controller might act as the data source for a table. The delegate pattern is huge in iOS, such as UITableViewDelegate from UIKit.
@@ -274,6 +334,36 @@ interviewer.conductInterview(for: "Alice", method: candidateB)
 
 Dependency injection is the practice of creating an object and telling it what data it should work with, rather than letting that object query its environment to find that data for itself. Although this goes against the OOP principle of encapsulation, it allows for mocking data when testing, for example.
 
+1. Constructor Injection:
+Dependencies are passed through the initializer (init).
+
+```
+class UserManager {
+    let apiService: APIService
+
+    init(apiService: APIService) {
+        self.apiService = apiService
+    }
+}
+```
+
+Now, you can inject a different APIService (e.g. mock or real).
+
+2. Property Injection:
+Dependencies are set via properties after initialization.
+
+```
+class UserManager {
+    var apiService: APIService?
+}
+```
+
+Benefits:
+
+- Makes classes less dependent on specific implementations.
+- Supports unit testing (you can pass mocks/stubs).
+- Encourages cleaner architecture.
+
 ##  What architecture would you use for a simple app vs a complex app?
 
 - Simple app (few pages): MVC is sufficient - separates Model, View, Controller
@@ -386,6 +476,15 @@ The strategy treats UI tests as high-value but high-maintenance assets, keeping 
 
 Avoid retain cycles using weak in closures or delegates.
 
+## How does GCD work? What is the difference between async and sync?
+
+GCD (Grand Central Dispatch) helps in multi-threading.
+
+- DispatchQueue.main.async {} → for UI updates
+- DispatchQueue.global().async {} → for background work
+- async → doesn't block the current thread
+- sync → blocks the thread until task completes
+
 # Security
 
 # Swift
@@ -422,6 +521,13 @@ Avoid retain cycles using weak in closures or delegates.
 	- Force unwrap: ! (avoid when possible)
 
 # SwiftUI
+
+## What’s the difference between @State, @Binding, @ObservedObject, @EnvironmentObject in SwiftUI?
+
+- @State: local state within a view
+- @Binding: share state between parent and child view
+- @ObservedObject: observed model passed into a view
+- @EnvironmentObject: global shared data injected from environment
 
 ## What's the difference between @Bindable and @Binding? 
 
