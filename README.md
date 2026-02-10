@@ -461,6 +461,34 @@ The strategy treats UI tests as high-value but high-maintenance assets, keeping 
 
 # Performance
 
+## How does memory management work in iOS? What is ARC?
+
+- iOS uses Automatic Reference Counting (ARC) to manage memory.
+- ARC keeps track of how many strong references are pointing to an object.
+- When the reference count drops to zero, the memory is automatically freed.
+
+Key Points:
+
+- Strong reference: Increases reference count.
+- Weak reference: Doesn’t increase count; used to avoid retain cycles.
+- Unowned reference: Similar to weak, but assumes the object will never be nil.
+
+Scenario Example:
+
+If ViewController strongly owns a delegate, and the delegate also strongly references the ViewController, a retain cycle happens. To fix it, delegate should be marked as weak.
+
+## Explain the difference between escaping and non-escaping closures.
+
+- Non-escaping closure: Called immediately within the function’s body. Doesn’t outlive the function.
+- Escaping closure: Stored and called later. Might outlive the function scope.
+
+Use @escaping when:
+
+- Closure is passed to an async API or stored for later use.
+
+Scenario:
+In a network call using URLSession, the completion handler is escaping, because the response comes later.
+
 ## How do you avoid retain cycles?
 
 - Use weak or unowned for delegate references
