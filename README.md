@@ -559,6 +559,50 @@ GCD (Grand Central Dispatch) helps in multi-threading.
 
 ## What's the difference between @Bindable and @Binding? 
 
+### @Binding (The Classic Bridge)
+@Binding is used when a child view needs to read and write a value that is owned by a parent view. It doesn’t store the data itself; it just points back to the original source.
+
+Used for: Simple data types (Strings, Bools, Ints) or passing a specific property.
+
+The Vibe: "I don't own this, but I have permission to change it."
+
+```
+struct ToggleView: View {
+    @Binding var isOn: Bool // Received from parent
+
+    var body: some View {
+        Toggle("Switch", isOn: $isOn)
+    }
+}
+```
+
+### @Bindable (The New Observable Tool)
+Introduced with the Observation framework (iOS 17+), @Bindable is used specifically with classes marked with @Observable. It allows you to create bindings to the properties of an object that was passed into a view (usually via a parameter or environment).
+
+Used for: Objects marked with @Observable.
+
+The Vibe: "This object is already being watched; I’m just making its properties editable in a Form or TextField."
+
+```
+@Observable class UserProfile {
+    var name = "Gemini"
+}
+
+struct ProfileEditView: View {
+    var user: UserProfile // Just a standard property
+
+    var body: some View {
+        // We use @Bindable here to create a '$' binding on the fly
+        @Bindable var bindableUser = user
+        TextField("Name", text: $bindableUser.name)
+    }
+}
+```
+
+- Use @Binding if you are building a reusable component (like a custom slider) that needs to change a single piece of data.
+
+- Use @Bindable if you have a data model (a class) and you need to plug its properties into things like TextField, Toggle, or Picker.
+
 ## What’s the difference between @ObservedObject, @State, and @EnvironmentObject?
 
 - Use @State for simple properties that belong to a single view. They should usually be marked private.
