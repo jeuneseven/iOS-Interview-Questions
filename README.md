@@ -446,6 +446,17 @@ Used to manage resources, save data, pause/resume tasks.
 
 # Miscellaneous
 
+## Have you worked with CI/CD for iOS? How to automate SDK releases?
+
+CI/CD Tools: GitHub Actions, Bitrise, Jenkins, CircleCI.
+
+Automation Steps:
+
+- Use Fastlane for building & code signing.
+- Run unit/UI tests automatically.
+- Auto-increment version & changelog.
+- Push build to TestFlight or release tag to GitHub.
+
 ## How does GCD work? What is the difference between async and sync?
 
 - DispatchQueue.main.async {} → for UI updates
