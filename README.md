@@ -446,6 +446,178 @@ Used to manage resources, save data, pause/resume tasks.
 
 # Miscellaneous
 
+## Debounce vs Throttle
+
+- Debounce delays execution until a specified time has passed since the last trigger. If the action is triggered again before the delay completes, the timer resets. This is useful for search inputs where you want to wait until the user stops typing.
+
+```
+actor Debouncer {
+    private var task: Task<Void, Never>?
+    private let duration: Duration
+    
+    init(duration: Duration) {
+        self.duration = duration
+    }
+    
+    func debounce(action: @escaping @Sendable () async -> Void) {
+        // Cancel any pending task
+        task?.cancel()
+        
+        // Create a new task with delay
+        task = Task {
+            do {
+                try await Task.sleep(for: duration)
+                // Only execute if not cancelled
+                await action()
+            } catch {
+                // Task was cancelled, do nothing
+            }
+        }
+    }
+}
+```
+
+- Throttle limits execution to at most once per specified time interval. Unlike debounce, it guarantees the action runs at regular intervals during continuous triggering. This is useful for scroll handlers or resize events.
+
+```
+actor Throttler {
+    private let interval: Duration
+    private var lastExecutionTime: ContinuousClock.Instant?
+    private var pendingTask: Task<Void, Never>?
+    
+    init(interval: Duration) {
+        self.interval = interval
+    }
+    
+    func throttle(action: @escaping @Sendable () async -> Void) {
+        let now = ContinuousClock.now
+        
+        // Cancel any pending delayed execution
+        pendingTask?.cancel()
+        
+        if let lastTime = lastExecutionTime {
+            let elapsed = now - lastTime
+            
+            if elapsed >= interval {
+                // Enough time has passed, execute immediately
+                lastExecutionTime = now
+                Task { await action() }
+            } else {
+                // Schedule execution for remaining time
+                let remaining = interval - elapsed
+                pendingTask = Task {
+                    do {
+                        try await Task.sleep(for: remaining)
+                        lastExecutionTime = ContinuousClock.now
+                        await action()
+                    } catch {
+                        // Task was cancelled
+                    }
+                }
+            }
+        } else {
+            // First call, execute immediately
+            lastExecutionTime = now
+            Task { await action() }
+        }
+    }
+}
+```
+
+### Usage in SwiftUI
+
+```
+struct SearchView: View {
+    @State private var searchText = ""
+    @State private var results: [String] = []
+    
+    // Create debouncer with 300ms delay
+    private let debouncer = Debouncer(duration: .milliseconds(300))
+    
+    var body: some View {
+        VStack {
+            TextField("Search...", text: $searchText)
+                .textFieldStyle(.roundedBorder)
+                .onChange(of: searchText) { _, newValue in
+                    Task {
+                        await debouncer.debounce {
+                            await performSearch(query: newValue)
+                        }
+                    }
+                }
+            
+            List(results, id: \.self) { result in
+                Text(result)
+            }
+        }
+        .padding()
+    }
+    
+    @MainActor
+    private func performSearch(query: String) async {
+        // Simulate API call
+        results = ["Result for: \(query)"]
+    }
+}
+```
+
+### Non-Actor Alternative
+
+```
+@MainActor
+final class Debouncer {
+    private var workItem: DispatchWorkItem?
+    private let delay: TimeInterval
+    
+    init(delay: TimeInterval) {
+        self.delay = delay
+    }
+    
+    func debounce(action: @escaping () -> Void) {
+        // Cancel previous scheduled work
+        workItem?.cancel()
+        
+        // Schedule new work
+        let item = DispatchWorkItem(block: action)
+        workItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: item)
+    }
+}
+
+@MainActor
+final class Throttler {
+    private var lastFireTime: Date = .distantPast
+    private var pendingWorkItem: DispatchWorkItem?
+    private let interval: TimeInterval
+    
+    init(interval: TimeInterval) {
+        self.interval = interval
+    }
+    
+    func throttle(action: @escaping () -> Void) {
+        pendingWorkItem?.cancel()
+        
+        let now = Date()
+        let elapsed = now.timeIntervalSince(lastFireTime)
+        
+        if elapsed >= interval {
+            // Execute immediately
+            lastFireTime = now
+            action()
+        } else {
+            // Schedule for later
+            let remaining = interval - elapsed
+            let item = DispatchWorkItem { [weak self] in
+                self?.lastFireTime = Date()
+                action()
+            }
+            pendingWorkItem = item
+            DispatchQueue.main.asyncAfter(deadline: .now() + remaining, execute: item)
+        }
+    }
+}
+```
+
 ## Have you worked with CI/CD for iOS? How to automate SDK releases?
 
 CI/CD Tools: GitHub Actions, Bitrise, Jenkins, CircleCI.
