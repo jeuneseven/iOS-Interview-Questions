@@ -432,6 +432,61 @@ Testing: You can inject a MockAuthService to simulate different scenarios.
 
 # iOS
 
+## What is ARC (Automatic Reference Counting) in Swift? How does it work?
+
+ARC is a memory management system in Swift that automatically keeps track of how many times an object is being used. It helps prevent memory leaks by freeing up memory used by objects when they’re no longer needed.
+
+### How ARC Works:
+
+- Every Object Has a Reference Count:
+
+When you create an object (say a class instance), Swift tracks how many strong references point to it.
+
+- Reference Count Increases:
+
+Every time you assign this object to a new variable or constant (strong reference), its count increases.
+
+- Reference Count Decreases:
+
+When one of those references is set to nil or goes out of scope, the count decreases.
+
+- Object is Deallocated:
+
+Once the reference count becomes zero, Swift automatically deallocates (removes) that object from memory.
+
+```
+class Person {
+    let name: String
+    init(name: String) {
+        self.name = name
+        print("\(name) is initialized")
+    }
+    deinit {
+        print("\(name) is deallocated")
+    }
+}
+
+var person1: Person? = Person(name: "Anand")
+var person2 = person1  // reference count = 2
+person1 = nil          // reference count = 1
+person2 = nil          // reference count = 0, object is deallocated
+```
+
+### Why ARC is Important:
+
+- It saves us from manually freeing memory like in C or C++.
+- Makes code safer and reduces chances of memory leaks.
+
+But ARC Can’t Handle Everything Automatically — e.g., Retain Cycles:
+
+When two objects hold strong references to each other, their reference count never reaches zero. This creates a retain cycle and memory is never released.
+
+You fix this using weak or unowned references.
+
+### ARC Only Works With Classes:
+
+ARC is only applied to class instances, not structs or enums because they are value types and copied.
+
 ## Explain the iOS Application Lifecycle.
 
 Key methods in AppDelegate or SceneDelegate:
