@@ -154,21 +154,21 @@ Clean Architecture is a way of organizing your app code so that each part (UI, l
 
 ### Layered Structure:
 
-1. Presentation Layer (UI)
+- Presentation Layer (UI)
 
-- Contains ViewControllers, SwiftUI views, or Composables.
-- Talks to the domain layer to get data and show it to the user.
+	- Contains ViewControllers, SwiftUI views, or Composables.
+	- Talks to the domain layer to get data and show it to the user.
 
-2. Domain Layer (Business Logic)
+- Domain Layer (Business Logic)
 
-- Contains Use Cases (what your app does).
-- Independent of frameworks like UIKit or SwiftUI.
-- Pure Swift code, easy to test.
+	- Contains Use Cases (what your app does).
+	- Independent of frameworks like UIKit or SwiftUI.
+	- Pure Swift code, easy to test.
 
-3. Data Layer (Repositories / API / Database)
+- Data Layer (Repositories / API / Database)
 
-- Handles network requests, database access, etc.
-- Sends data to Domain layer via interfaces (protocols).
+	- Handles network requests, database access, etc.
+	- Sends data to Domain layer via interfaces (protocols).
 
 ### Benefits:
 
