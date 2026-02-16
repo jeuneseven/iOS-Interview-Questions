@@ -334,7 +334,7 @@ interviewer.conductInterview(for: "Alice", method: candidateB)
 
 Dependency injection is the practice of creating an object and telling it what data it should work with, rather than letting that object query its environment to find that data for itself. Although this goes against the OOP principle of encapsulation, it allows for mocking data when testing, for example.
 
-1. Constructor Injection:
+- Constructor Injection:
 Dependencies are passed through the initializer (init).
 
 ```
@@ -349,7 +349,7 @@ class UserManager {
 
 Now, you can inject a different APIService (e.g. mock or real).
 
-2. Property Injection:
+- Property Injection:
 Dependencies are set via properties after initialization.
 
 ```
