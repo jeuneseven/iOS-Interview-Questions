@@ -753,6 +753,45 @@ GCD (Grand Central Dispatch) helps in multi-threading.
 
 # Security
 
+## Face ID / Touch ID (Biometric Authentication)
+- Use `LocalAuthentication` framework with `LAContext` for authentication
+- Must provide password fallback when biometrics fail or are unavailable
+- Never access actual biometric data - only receive success/failure result
+- Require `NSFaceIDUsageDescription` in `Info.plist` for Face ID usage
+
+## App Transport Security (ATS)
+- iOS 9+ enforces HTTPS by default to protect data in transit
+- Prevents man-in-the-middle (MITM) attacks with encrypted connections
+- Configure exceptions in `Info.plist` for specific cases (legacy systems, local servers)
+- App Store Review requires secure transmission of user-sensitive data
+- Avoid disabling ATS entirely - use domain-specific exceptions instead
+
+## Keychain
+- Preferred solution for storing sensitive data (passwords, tokens, certificates)
+- Data is encrypted - protected even on jailbroken devices
+- `UserDefaults` is NOT suitable for sensitive info (stored in plain text)
+- Configurable access control: after device unlock, require biometrics, etc.
+- Supports sharing across apps via Keychain Groups
+- Use Keychain Services API or wrapper libraries (e.g., KeychainAccess)
+
+## Secure Hash
+- Use `CryptoKit` framework (iOS 13+) - supports SHA256, SHA384, SHA512
+- Example: `SHA256.hash(data: someData)`
+- Also handles HMAC, digital signatures, and other cryptographic operations
+- Legacy option: `CommonCrypto`, but CryptoKit is more modern and secure
+
+## Additional Security Topics
+
+**Data Storage Security Levels (low to high)**
+- UserDefaults → File System → Keychain → Secure Enclave
+
+**Other Common Security Practices**
+- Code obfuscation and anti-debugging
+- Jailbreak detection
+- SSL Pinning to prevent MITM attacks
+- Never hardcode sensitive data (API keys, secrets) in source code
+- Use `Data Protection` API for file-level encryption
+
 # Swift
 
 ## What's the difference between var and let?
