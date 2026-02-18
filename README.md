@@ -432,6 +432,17 @@ Testing: You can inject a MockAuthService to simulate different scenarios.
 
 # iOS
 
+## What’s the difference between CocoaPods, Carthage, and Swift Package Manager?
+
+These are dependency managers.
+
+- CocoaPods: Easy to use, modifies Xcode project
+- Carthage: Manual setup, more control
+- SPM: Built into Xcode, recommended by Apple
+Use SPM for new projects. 
+
+Use CocoaPods if you need older or more popular libraries.
+
 ## What is ARC (Automatic Reference Counting) in Swift? How does it work?
 
 ARC is a memory management system in Swift that automatically keeps track of how many times an object is being used. It helps prevent memory leaks by freeing up memory used by objects when they’re no longer needed.
