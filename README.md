@@ -4,25 +4,25 @@
 
 [Accessibility](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#accessibility)
 
-[Data](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#data)
+[Architecture](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#architecture)
 
-[Design patterns](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#design-patterns)
+[Concurrency](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#concurrency)
 
-[Frameworks](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#frameworks)
+[Data & Protocols](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#data--protocols)
 
-[iOS](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#ios)
-
-[Miscellaneous](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#miscellaneous)
-
-[Performance](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#performance)
+[Memory](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#memory)
 
 [Security](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#security)
 
-[Swift](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#swift)
+[Swift Basics](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#swift-basics)
 
 [SwiftUI](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#swiftui)
 
+[Testing & CI/CD](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#testing--cicd)
+
 [UIKit](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#uikit)
+
+[Xcode & Tools](https://github.com/jeuneseven/iOS-Interview-Questions?tab=readme-ov-file#xcode--tools)
 
 # Accessibility
 
@@ -89,64 +89,7 @@
   - Sometimes require UI or animation rework
   - Consistently improve the experience for all users
 
-# Data
-
-## How do you persist data in iOS?
-
-- UserDefaults: small key-value data
-- Core Data: complex structured data
-- FileManager: for files
-- Keychain: for secure data (passwords, tokens)
-
-## What does the Codable protocol do?
-
-- Purpose: A typealias for Encodable & Decodable, enabling a type to be converted to and from external representations like JSON or Property Lists.
-- Key Requirement: Properties within the type must also be Codable.
-- Use Case: Essential for API integration (parsing server responses) and local data persistence (saving data to disk or UserDefaults).
-- Keywords: JSON, Serialization, Deserialization, JSONEncoder, JSONDecoder, Persistence.
-
-## What does the Identifiable protocol do?
-
-- Purpose: Ensures an instance has a stable, unique identity regardless of its value.
-- Key Property: Requires a single property named id.
-- Use Case: Critical for SwiftUI lists and collections to track which items are added, removed, or moved, ensuring smooth animations and data integrity.
-- Keywords: Stable identity, id, SwiftUI reconciliation, Unique.
-
-## What does the Hashable protocol do?
-
-- Purpose: Allows an object to be converted into a hash value (an integer).
-- Key Requirement: The object must also conform to Equatable.
-- Use Case: Necessary for storing instances in a Set or using them as keys in a Dictionary. It enables fast $O(1)$ lookups.
-- Keywords: Hash value, Set, Dictionary keys, $O(1)$ lookup, Deterministic.
-
-## What does the Equatable protocol do? 
-
-- Purpose: Defines a way to compare two instances for equality.
-- Key Operator: Implements the == operator.
-- Use Case: Used for basic logic checks (if a == b), searching in arrays (contains), or unit testing.
-- Keywords: Comparison, == operator, Value equality, Logic branching.
-
-## What does the Comparable protocol do?
-
-- Purpose: Extends Equatable to allow objects to be ordered or ranked.
-- Key Operator: Implements the < (less than) operator.
-- Use Case: Essential for sorting arrays (.sorted()), finding the min() or max(), and using range operators (...).
-- Keywords: Sorting, Relational operators (<, >), Ranking, Order.
-
-## What does the CaseIterable protocol do?
-- Purpose: Automatically generates a collection of all values in an enum.
-- Key Property: Provides an allCases static property.
-- Use Case: Perfect for populating Pickers, Segmented Controls, or looping through every possible state of an enum without hardcoding an array.
-- Keywords: allCases, Enum iteration, UI populating, Reflection.
-
-## What does the CustomStringConvertible protocol do? 
-
-- Purpose: Allows you to define a custom text representation for an instance.
-- Key Property: Requires a description string property.
-- Use Case: Improves debugging and logging. Instead of a messy default output, print(object) returns the specific string you defined.
-- Keywords: description, Debugging, Logging, String interpolation.
-
-# Design patterns
+# Architecture
 
 ## What is the Role of Clean Architecture in Swift?
 
@@ -178,7 +121,7 @@ You can test business logic without worrying about UI or API.
 
 - Separation of Concerns
 
-Each layer has a specific job. UI doesn’t handle business logic. Business logic doesn’t care how data is fetched.
+Each layer has a specific job. UI doesn't handle business logic. Business logic doesn't care how data is fetched.
 
 - Scalability
 
@@ -210,7 +153,7 @@ class NotificationFactory {
 
 ## How would you explain delegates to a new Swift developer?
 
-Delegation allows you to have one object act in place of another, for example your view controller might act as the data source for a table. The delegate pattern is huge in iOS, such as UITableViewDelegate from UIKit.
+Delegation allows you to have one object act in place of another, for example your view controller might act as the data source for a table. The delegate pattern is huge in iOS, such as UITableViewDelegate from UIKit.
 
 ## Can you explain MVC, and how it's used on Apple's platforms?
 
@@ -222,7 +165,7 @@ MVC is an approach that advocates separating data (model) from presentation (vie
 
 - **Model** represents your data and business logic.
 - **View** is your UI layer — the part that the user sees and interacts with.
-- **ViewModel** acts as the middle layer that holds your app’s state and exposes data in a way that’s easy for the View to consume.
+- **ViewModel** acts as the middle layer that holds your app's state and exposes data in a way that's easy for the View to consume.
 
 MVVM separates concerns between data, UI, and state.
 
@@ -259,9 +202,9 @@ It is a way of designing code around **what something can do**, rather than **wh
 
 In object-oriented programming, we usually use inheritance to share behavior – which can lead to deep class hierarchies. In protocol-oriented programming, we use **protocols and extensions** instead, so we can define behaviors in a horizontal way.
 
-One of the biggest advantages is that protocols work not just with classes, but also with structs and enums. That means we can get many of the benefits of OOP – like code reuse and polymorphism – while still taking advantage of Swift’s value types.
+One of the biggest advantages is that protocols work not just with classes, but also with structs and enums. That means we can get many of the benefits of OOP – like code reuse and polymorphism – while still taking advantage of Swift's value types.
 
-POP is really about **composition over inheritance**, and it fits perfectly with Swift’s design philosophy.
+POP is really about **composition over inheritance**, and it fits perfectly with Swift's design philosophy.
 
 ```
 import Foundation
@@ -330,7 +273,7 @@ interviewer.conductInterview(for: "John", method: candidateA)
 interviewer.conductInterview(for: "Alice", method: candidateB)
 ```
 
-##  How would you explain dependency injection to a junior developer?
+##  How would you explain dependency injection to a junior developer?
 
 Dependency injection is the practice of creating an object and telling it what data it should work with, rather than letting that object query its environment to find that data for itself. Although this goes against the OOP principle of encapsulation, it allows for mocking data when testing, for example.
 
@@ -378,25 +321,6 @@ Benefits:
 - For most SwiftUI apps, MVVM is sufficient and recommended
 - VIPER better suited for UIKit-based large codebases (10,000+ lines)
 
-# Frameworks
-
-## Why must UI updates be performed on the main thread?
-
-1. The Foundation (Legacy & UIKit) UIKit is not thread-safe. All drawing, layout, and event handling are tied to the Main RunLoop.
-
-	- The Risk: Updating from background threads causes "Race Conditions," leading to corrupted memory, flickering UI, or crashes.
-	- The Manual Way: Developers traditionally used DispatchQueue.main.async to jump back to the main thread.
-
-2. The SwiftUI Reality Even though SwiftUI is newer, it still renders through Core Animation. When you update @State or @Published properties, SwiftUI must reconcile the view tree on the main thread to keep the screen in sync with the data.
-
-3. The iOS 17 Evolution (@MainActor) In iOS 17, the responsibility has shifted from the developer’s "manual check" to the compiler’s "automatic enforcement."
-
-	- The Tool: We now use the @MainActor macro.
-
-	- The Shift: Instead of manually wrapping code in blocks, you mark your classes (like those using the new @Observable macro) as @MainActor.
-
-	- The Benefit: Swift now catches threading errors at compile-time. If you try to update UI data from a background thread, the app won't even compile, preventing bugs before they happen.
-
 ## What are the practical pros and cons of using Singletons?
 
 - The Pros: Why use them?
@@ -421,7 +345,6 @@ Production: Uses the default .shared instance.
 
 Testing: You can inject a MockAuthService to simulate different scenarios.
 
-
 ## How do you manage modularization?
 
 - Use CocoaPods or SPM for foundation modules (networking, UI components)
@@ -430,87 +353,45 @@ Testing: You can inject a MockAuthService to simulate different scenarios.
 - Each module can use its own architecture (MVC/MVVM)
 - Version management: semantic versioning (major.minor.patch)
 
-# iOS
+# Concurrency
 
-## What’s the difference between CocoaPods, Carthage, and Swift Package Manager?
+## Why must UI updates be performed on the main thread?
 
-These are dependency managers.
+1. The Foundation (Legacy & UIKit) UIKit is not thread-safe. All drawing, layout, and event handling are tied to the Main RunLoop.
 
-- CocoaPods: Easy to use, modifies Xcode project
-- Carthage: Manual setup, more control
-- SPM: Built into Xcode, recommended by Apple
-Use SPM for new projects. 
+	- The Risk: Updating from background threads causes "Race Conditions," leading to corrupted memory, flickering UI, or crashes.
+	- The Manual Way: Developers traditionally used DispatchQueue.main.async to jump back to the main thread.
 
-Use CocoaPods if you need older or more popular libraries.
+2. The SwiftUI Reality Even though SwiftUI is newer, it still renders through Core Animation. When you update @State or @Published properties, SwiftUI must reconcile the view tree on the main thread to keep the screen in sync with the data.
 
-## What is ARC (Automatic Reference Counting) in Swift? How does it work?
+3. The iOS 17 Evolution (@MainActor) In iOS 17, the responsibility has shifted from the developer's "manual check" to the compiler's "automatic enforcement."
 
-ARC is a memory management system in Swift that automatically keeps track of how many times an object is being used. It helps prevent memory leaks by freeing up memory used by objects when they’re no longer needed.
+	- The Tool: We now use the @MainActor macro.
 
-### How ARC Works:
+	- The Shift: Instead of manually wrapping code in blocks, you mark your classes (like those using the new @Observable macro) as @MainActor.
 
-- Every Object Has a Reference Count:
+	- The Benefit: Swift now catches threading errors at compile-time. If you try to update UI data from a background thread, the app won't even compile, preventing bugs before they happen.
 
-When you create an object (say a class instance), Swift tracks how many strong references point to it.
+## How does GCD work? What is the difference between async and sync?
 
-- Reference Count Increases:
+GCD (Grand Central Dispatch) helps in multi-threading.
 
-Every time you assign this object to a new variable or constant (strong reference), its count increases.
+- DispatchQueue.main.async {} → for UI updates
+- DispatchQueue.global().async {} → for background work
+- async → doesn't block the current thread
+- sync → blocks the thread until task completes
 
-- Reference Count Decreases:
+## Explain the difference between escaping and non-escaping closures.
 
-When one of those references is set to nil or goes out of scope, the count decreases.
+- Non-escaping closure: Called immediately within the function's body. Doesn't outlive the function.
+- Escaping closure: Stored and called later. Might outlive the function scope.
 
-- Object is Deallocated:
+Use @escaping when:
 
-Once the reference count becomes zero, Swift automatically deallocates (removes) that object from memory.
+- Closure is passed to an async API or stored for later use.
 
-```
-class Person {
-    let name: String
-    init(name: String) {
-        self.name = name
-        print("\(name) is initialized")
-    }
-    deinit {
-        print("\(name) is deallocated")
-    }
-}
-
-var person1: Person? = Person(name: "Anand")
-var person2 = person1  // reference count = 2
-person1 = nil          // reference count = 1
-person2 = nil          // reference count = 0, object is deallocated
-```
-
-### Why ARC is Important:
-
-- It saves us from manually freeing memory like in C or C++.
-- Makes code safer and reduces chances of memory leaks.
-
-But ARC Can’t Handle Everything Automatically — e.g., Retain Cycles:
-
-When two objects hold strong references to each other, their reference count never reaches zero. This creates a retain cycle and memory is never released.
-
-You fix this using weak or unowned references.
-
-### ARC Only Works With Classes:
-
-ARC is only applied to class instances, not structs or enums because they are value types and copied.
-
-## Explain the iOS Application Lifecycle.
-
-Key methods in AppDelegate or SceneDelegate:
-
-- application(_:didFinishLaunchingWithOptions:) – app launched
-- applicationDidEnterBackground(_:) – app moved to background
-- applicationWillEnterForeground(_:) – app returning to foreground
-- applicationDidBecomeActive(_:) – app is active
-- applicationWillTerminate(_:) – app is terminating
-
-Used to manage resources, save data, pause/resume tasks.
-
-# Miscellaneous
+Scenario:
+In a network call using URLSession, the completion handler is escaping, because the response comes later.
 
 ## Debounce vs Throttle
 
@@ -684,59 +565,129 @@ final class Throttler {
 }
 ```
 
-## Have you worked with CI/CD for iOS? How to automate SDK releases?
+# Data & Protocols
 
-CI/CD Tools: GitHub Actions, Bitrise, Jenkins, CircleCI.
+## How do you persist data in iOS?
 
-Automation Steps:
+- UserDefaults: small key-value data
+- Core Data: complex structured data
+- FileManager: for files
+- Keychain: for secure data (passwords, tokens)
 
-- Use Fastlane for building & code signing.
-- Run unit/UI tests automatically.
-- Auto-increment version & changelog.
-- Push build to TestFlight or release tag to GitHub.
+## What does the Codable protocol do?
 
-## How does GCD work? What is the difference between async and sync?
+- Purpose: A typealias for Encodable & Decodable, enabling a type to be converted to and from external representations like JSON or Property Lists.
+- Key Requirement: Properties within the type must also be Codable.
+- Use Case: Essential for API integration (parsing server responses) and local data persistence (saving data to disk or UserDefaults).
+- Keywords: JSON, Serialization, Deserialization, JSONEncoder, JSONDecoder, Persistence.
 
-- DispatchQueue.main.async {} → for UI updates
-- DispatchQueue.global().async {} → for background work
-- async → doesn't block the current thread
-- sync → blocks the thread until task completes
+## What does the Identifiable protocol do?
 
-## Experience level with XCTest and UI testing?
+- Purpose: Ensures an instance has a stable, unique identity regardless of its value.
+- Key Property: Requires a single property named id.
+- Use Case: Critical for SwiftUI lists and collections to track which items are added, removed, or moved, ensuring smooth animations and data integrity.
+- Keywords: Stable identity, id, SwiftUI reconciliation, Unique.
 
-Deeply integrated with XCTest and actively utilizing the new Swift Testing framework. The architecture relies on unit testing for logic verification, supplemented by targeted UI tests for end-to-end validation of key features.
+## What does the Hashable protocol do?
 
-The strategy treats UI tests as high-value but high-maintenance assets, keeping them limited to critical paths to ensure the CI pipeline remains fast and reliable. Recent updates leverage the @Test syntax for enhanced readability and better test grouping.
+- Purpose: Allows an object to be converted into a hash value (an integer).
+- Key Requirement: The object must also conform to Equatable.
+- Use Case: Necessary for storing instances in a Set or using them as keys in a Dictionary. It enables fast $O(1)$ lookups.
+- Keywords: Hash value, Set, Dictionary keys, $O(1)$ lookup, Deterministic.
 
-# Performance
+## What does the Equatable protocol do? 
 
-## How does memory management work in iOS? What is ARC?
+- Purpose: Defines a way to compare two instances for equality.
+- Key Operator: Implements the == operator.
+- Use Case: Used for basic logic checks (if a == b), searching in arrays (contains), or unit testing.
+- Keywords: Comparison, == operator, Value equality, Logic branching.
 
-- iOS uses Automatic Reference Counting (ARC) to manage memory.
-- ARC keeps track of how many strong references are pointing to an object.
-- When the reference count drops to zero, the memory is automatically freed.
+## What does the Comparable protocol do?
+
+- Purpose: Extends Equatable to allow objects to be ordered or ranked.
+- Key Operator: Implements the < (less than) operator.
+- Use Case: Essential for sorting arrays (.sorted()), finding the min() or max(), and using range operators (...).
+- Keywords: Sorting, Relational operators (<, >), Ranking, Order.
+
+## What does the CaseIterable protocol do?
+- Purpose: Automatically generates a collection of all values in an enum.
+- Key Property: Provides an allCases static property.
+- Use Case: Perfect for populating Pickers, Segmented Controls, or looping through every possible state of an enum without hardcoding an array.
+- Keywords: allCases, Enum iteration, UI populating, Reflection.
+
+## What does the CustomStringConvertible protocol do? 
+
+- Purpose: Allows you to define a custom text representation for an instance.
+- Key Property: Requires a description string property.
+- Use Case: Improves debugging and logging. Instead of a messy default output, print(object) returns the specific string you defined.
+- Keywords: description, Debugging, Logging, String interpolation.
+
+# Memory
+
+## What is ARC (Automatic Reference Counting) in Swift? How does it work?
+
+ARC is a memory management system in Swift that automatically keeps track of how many times an object is being used. It helps prevent memory leaks by freeing up memory used by objects when they're no longer needed.
+
+### How ARC Works:
+
+- Every Object Has a Reference Count:
+
+When you create an object (say a class instance), Swift tracks how many strong references point to it.
+
+- Reference Count Increases:
+
+Every time you assign this object to a new variable or constant (strong reference), its count increases.
+
+- Reference Count Decreases:
+
+When one of those references is set to nil or goes out of scope, the count decreases.
+
+- Object is Deallocated:
+
+Once the reference count becomes zero, Swift automatically deallocates (removes) that object from memory.
+
+```
+class Person {
+    let name: String
+    init(name: String) {
+        self.name = name
+        print("\(name) is initialized")
+    }
+    deinit {
+        print("\(name) is deallocated")
+    }
+}
+
+var person1: Person? = Person(name: "Anand")
+var person2 = person1  // reference count = 2
+person1 = nil          // reference count = 1
+person2 = nil          // reference count = 0, object is deallocated
+```
+
+### Why ARC is Important:
+
+- It saves us from manually freeing memory like in C or C++.
+- Makes code safer and reduces chances of memory leaks.
+
+But ARC Can't Handle Everything Automatically — e.g., Retain Cycles:
+
+When two objects hold strong references to each other, their reference count never reaches zero. This creates a retain cycle and memory is never released.
+
+You fix this using weak or unowned references.
+
+### ARC Only Works With Classes:
+
+ARC is only applied to class instances, not structs or enums because they are value types and copied.
 
 Key Points:
 
 - Strong reference: Increases reference count.
-- Weak reference: Doesn’t increase count; used to avoid retain cycles.
+- Weak reference: Doesn't increase count; used to avoid retain cycles.
 - Unowned reference: Similar to weak, but assumes the object will never be nil.
 
 Scenario Example:
 
 If ViewController strongly owns a delegate, and the delegate also strongly references the ViewController, a retain cycle happens. To fix it, delegate should be marked as weak.
-
-## Explain the difference between escaping and non-escaping closures.
-
-- Non-escaping closure: Called immediately within the function’s body. Doesn’t outlive the function.
-- Escaping closure: Stored and called later. Might outlive the function scope.
-
-Use @escaping when:
-
-- Closure is passed to an async API or stored for later use.
-
-Scenario:
-In a network call using URLSession, the completion handler is escaping, because the response comes later.
 
 ## How do you avoid retain cycles?
 
@@ -748,19 +699,10 @@ In a network call using URLSession, the completion handler is escaping, because 
 ## Difference between weak, strong, and unowned in Swift?
 
 - strong: default, keeps the object in memory
-- weak: doesn’t increase retain count, allows ARC to deallocate (used in delegates, optional)
+- weak: doesn't increase retain count, allows ARC to deallocate (used in delegates, optional)
 - unowned: like weak but non-optional, used when object will always be in memory
 
 Avoid retain cycles using weak in closures or delegates.
-
-## How does GCD work? What is the difference between async and sync?
-
-GCD (Grand Central Dispatch) helps in multi-threading.
-
-- DispatchQueue.main.async {} → for UI updates
-- DispatchQueue.global().async {} → for background work
-- async → doesn't block the current thread
-- sync → blocks the thread until task completes
 
 # Security
 
@@ -803,7 +745,7 @@ GCD (Grand Central Dispatch) helps in multi-threading.
 - Never hardcode sensitive data (API keys, secrets) in source code
 - Use `Data Protection` API for file-level encryption
 
-# Swift
+# Swift Basics
 
 ## What's the difference between var and let?
 
@@ -838,7 +780,7 @@ GCD (Grand Central Dispatch) helps in multi-threading.
 
 # SwiftUI
 
-## What’s the difference between @State, @Binding, @ObservedObject, @EnvironmentObject in SwiftUI?
+## What's the difference between @State, @Binding, @ObservedObject, @EnvironmentObject in SwiftUI?
 
 - @State: local state within a view
 - @Binding: share state between parent and child view
@@ -848,7 +790,7 @@ GCD (Grand Central Dispatch) helps in multi-threading.
 ## What's the difference between @Bindable and @Binding? 
 
 ### @Binding (The Classic Bridge)
-@Binding is used when a child view needs to read and write a value that is owned by a parent view. It doesn’t store the data itself; it just points back to the original source.
+@Binding is used when a child view needs to read and write a value that is owned by a parent view. It doesn't store the data itself; it just points back to the original source.
 
 Used for: Simple data types (Strings, Bools, Ints) or passing a specific property.
 
@@ -869,7 +811,7 @@ Introduced with the Observation framework (iOS 17+), @Bindable is used specifica
 
 Used for: Objects marked with @Observable.
 
-The Vibe: "This object is already being watched; I’m just making its properties editable in a Form or TextField."
+The Vibe: "This object is already being watched; I'm just making its properties editable in a Form or TextField."
 
 ```
 @Observable class UserProfile {
@@ -891,12 +833,31 @@ struct ProfileEditView: View {
 
 - Use @Bindable if you have a data model (a class) and you need to plug its properties into things like TextField, Toggle, or Picker.
 
-## What’s the difference between @ObservedObject, @State, and @EnvironmentObject?
+## What's the difference between @ObservedObject, @State, and @EnvironmentObject?
 
 - Use @State for simple properties that belong to a single view. They should usually be marked private.
-- Use @ObservedObject for complex properties that might belong to several views. Most times you’re using a reference type you should be using @ObservedObject for it.
+- Use @ObservedObject for complex properties that might belong to several views. Most times you're using a reference type you should be using @ObservedObject for it.
 - Use @StateObject once for each observable object you use, in whichever part of your code is responsible for creating it.
 - Use @EnvironmentObject for properties that were created elsewhere in the app, such as shared data.
+
+# Testing & CI/CD
+
+## Have you worked with CI/CD for iOS? How to automate SDK releases?
+
+CI/CD Tools: GitHub Actions, Bitrise, Jenkins, CircleCI.
+
+Automation Steps:
+
+- Use Fastlane for building & code signing.
+- Run unit/UI tests automatically.
+- Auto-increment version & changelog.
+- Push build to TestFlight or release tag to GitHub.
+
+## Experience level with XCTest and UI testing?
+
+Deeply integrated with XCTest and actively utilizing the new Swift Testing framework. The architecture relies on unit testing for logic verification, supplemented by targeted UI tests for end-to-end validation of key features.
+
+The strategy treats UI tests as high-value but high-maintenance assets, keeping them limited to critical paths to ensure the CI pipeline remains fast and reliable. Recent updates leverage the @Test syntax for enhanced readability and better test grouping.
 
 # UIKit
 
@@ -921,3 +882,28 @@ SwiftUI embedding UIKit
 - Mainly for unsupported or advanced UIKit features
 - Encapsulate UIKit as a self-contained component
 - SwiftUI remains the source of truth for state and data
+
+# Xcode & Tools
+
+## What's the difference between CocoaPods, Carthage, and Swift Package Manager?
+
+These are dependency managers.
+
+- CocoaPods: Easy to use, modifies Xcode project
+- Carthage: Manual setup, more control
+- SPM: Built into Xcode, recommended by Apple
+Use SPM for new projects. 
+
+Use CocoaPods if you need older or more popular libraries.
+
+## Explain the iOS Application Lifecycle.
+
+Key methods in AppDelegate or SceneDelegate:
+
+- application(_:didFinishLaunchingWithOptions:) – app launched
+- applicationDidEnterBackground(_:) – app moved to background
+- applicationWillEnterForeground(_:) – app returning to foreground
+- applicationDidBecomeActive(_:) – app is active
+- applicationWillTerminate(_:) – app is terminating
+
+Used to manage resources, save data, pause/resume tasks.
