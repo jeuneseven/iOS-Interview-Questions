@@ -622,6 +622,17 @@ final class Throttler {
 - Use Case: Improves debugging and logging. Instead of a messy default output, print(object) returns the specific string you defined.
 - Keywords: description, Debugging, Logging, String interpolation.
 
+## What does the CustomDebugStringConvertible protocol do?
+
+* Purpose: Allows you to provide a custom debug-specific textual representation of an instance.
+* Key Property: Requires a `debugDescription` string property.
+* Used By: Invoked by `debugPrint()` and `String(reflecting:)`.
+* Fallback Behavior: If not implemented, Swift falls back to `CustomStringConvertible`’s `description` (if available), otherwise to the default reflection output.
+* Use Case: Provides detailed internal state information for developers during debugging, such as property names, raw values, or structural details.
+* Best Practice: Keep `description` concise and user-facing, while making `debugDescription` more verbose and developer-focused.
+* Keywords: `debugDescription`, `debugPrint()`, `String(reflecting:)`, debugging, reflection.
+
+
 # Memory
 
 ## What is ARC (Automatic Reference Counting) in Swift? How does it work?
